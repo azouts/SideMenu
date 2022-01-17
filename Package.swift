@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "SideMenu",
     products: [
-        .library(name: "SideMenu",  targets: ["SideMenu"])
+        .library(name: "SideMenu", targets: ["SideMenu"])
     ],
     dependencies: [],
     targets: [
@@ -14,4 +14,3 @@ let package = Package(
     ],
     swiftLanguageVersions: [.v4_2, .v5]
 )
-

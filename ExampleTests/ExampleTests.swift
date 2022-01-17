@@ -70,9 +70,4 @@ class ExampleTests: XCTestCase {
     private func validate() {
         XCTAssertTrue(mainViewController.exists)
     }
-
-    /* TODO - More tests:
-     - Rotation
-     - All menu settings
-     */
 }

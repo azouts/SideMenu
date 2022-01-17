@@ -20,7 +20,7 @@ internal protocol PresentationModel {
     var menuWidth: CGFloat { get }
 }
 
-internal protocol SideMenuPresentationControllerDelegate: class {
+internal protocol SideMenuPresentationControllerDelegate: AnyObject {
     func sideMenuPresentationControllerDidTap(_ presentationController: SideMenuPresentationController)
     func sideMenuPresentationController(_ presentationController: SideMenuPresentationController, didPanWith gesture: UIPanGestureRecognizer)
 }
@@ -71,7 +71,7 @@ internal final class SideMenuPresentationController {
         dismissalTransition()
         dismissalTransitionDidEnd(true)
     }
-    
+
     func containerViewWillLayoutSubviews() {
         guard let containerView = containerView,
             let presentedViewController = presentedViewController,
@@ -92,7 +92,7 @@ internal final class SideMenuPresentationController {
         statusBarFrame.size.height -= containerView.frame.minY
         statusBarView.frame = statusBarFrame
     }
-    
+
     func presentationTransitionWillBegin() {
         guard let containerView = containerView,
             let presentedViewController = presentedViewController,
@@ -105,13 +105,13 @@ internal final class SideMenuPresentationController {
 
         presentingViewController.view.isUserInteractionEnabled = config.presentingViewControllerUserInteractionEnabled
         containerView.backgroundColor = config.presentationStyle.backgroundColor
-        
+
         layerViews()
 
         if let statusBarView = statusBarView {
             containerView.addSubview(statusBarView)
         }
-        
+
         dismissalTransition()
         config.presentationStyle.presentationTransitionWillBegin(to: presentedViewController, from: presentingViewController)
     }
@@ -132,7 +132,7 @@ internal final class SideMenuPresentationController {
 
         config.presentationStyle.presentationTransition(to: presentedViewController, from: presentingViewController)
     }
-    
+
     func presentationTransitionDidEnd(_ completed: Bool) {
         guard completed else {
             snapshotView?.removeFromSuperview()
@@ -145,7 +145,7 @@ internal final class SideMenuPresentationController {
             else { return }
 
         addParallax(to: presentingViewController.view)
-        
+
         if let topNavigationController = presentingViewController as? UINavigationController {
             interactivePopGestureRecognizerEnabled = interactivePopGestureRecognizerEnabled ?? topNavigationController.interactivePopGestureRecognizer?.isEnabled
             topNavigationController.interactivePopGestureRecognizer?.isEnabled = false
@@ -198,7 +198,7 @@ internal final class SideMenuPresentationController {
 
         statusBarView?.removeFromSuperview()
         removeStyles(from: presentingViewController.containerViewController.view)
-        
+
         if let interactivePopGestureRecognizerEnabled = interactivePopGestureRecognizerEnabled,
             let topNavigationController = presentingViewController as? UINavigationController {
             topNavigationController.interactivePopGestureRecognizer?.isEnabled = interactivePopGestureRecognizerEnabled
@@ -240,15 +240,15 @@ private extension SideMenuPresentationController {
 
     func transition(to: UIViewController, from: UIViewController, alpha: CGFloat, statusBarAlpha: CGFloat, scale: CGFloat, translate: CGFloat) {
         containerViewWillLayoutSubviews()
-        
+
         to.view.transform = .identity
         to.view.alpha = 1
 
-        let x = (leftSide ? 1 : -1) * config.menuWidth * translate
+        let xx = (leftSide ? 1 : -1) * config.menuWidth * translate
         from.view.alpha = alpha
         from.view.transform = CGAffineTransform
             .identity
-            .translatedBy(x: x, y: 0)
+            .translatedBy(x: xx, y: 0)
             .scaledBy(x: scale, y: scale)
 
         statusBarView?.alpha = statusBarAlpha
@@ -282,19 +282,19 @@ private extension SideMenuPresentationController {
     func addParallax(to view: UIView) {
         var effects: [UIInterpolatingMotionEffect] = []
 
-        let x = config.presentationStyle.presentingParallaxStrength.width
-        if x > 0 {
+        let xx = config.presentationStyle.presentingParallaxStrength.width
+        if xx > 0 {
             let horizontal = UIInterpolatingMotionEffect(keyPath: "center.x", type: .tiltAlongHorizontalAxis)
-            horizontal.minimumRelativeValue = -x
-            horizontal.maximumRelativeValue = x
+            horizontal.minimumRelativeValue = -xx
+            horizontal.maximumRelativeValue = xx
             effects.append(horizontal)
         }
 
-        let y = config.presentationStyle.presentingParallaxStrength.height
-        if y > 0 {
+        let yy = config.presentationStyle.presentingParallaxStrength.height
+        if yy > 0 {
             let vertical = UIInterpolatingMotionEffect(keyPath: "center.y", type: .tiltAlongVerticalAxis)
-            vertical.minimumRelativeValue = -y
-            vertical.maximumRelativeValue = y
+            vertical.minimumRelativeValue = -yy
+            vertical.maximumRelativeValue = yy
             effects.append(vertical)
         }
 

@@ -12,5 +12,5 @@ class PresentedViewController: UIViewController {
     @IBAction private func close() {
         dismiss(animated: true, completion: nil)
     }
-    
+
 }

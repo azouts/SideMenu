@@ -12,10 +12,10 @@ extension NSObject: InitializableClass {}
 internal extension UIView {
 
     @discardableResult func untransformed(_ block: () -> CGFloat) -> CGFloat {
-        let t = transform
+        let tt = transform
         transform = .identity
         let value = block()
-        transform = t
+        transform = tt
         return value
     }
 
@@ -31,10 +31,10 @@ internal extension UIView {
     }
 
     static func animationsEnabled(_ enabled: Bool = true, _ block: () -> Void) {
-        let a = areAnimationsEnabled
+        let aa = areAnimationsEnabled
         setAnimationsEnabled(enabled)
         block()
-        setAnimationsEnabled(a)
+        setAnimationsEnabled(aa)
     }
 }
 

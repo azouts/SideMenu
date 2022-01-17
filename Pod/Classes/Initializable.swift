@@ -7,7 +7,7 @@
 
 import Foundation
 
-internal protocol InitializableClass: class {
+@objc internal protocol InitializableClass: AnyObject {
     init()
 }
 

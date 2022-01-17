@@ -59,7 +59,7 @@ public class SideMenuManager: NSObject {
         }
         set(menu) { _leftMenu.value = menu }
     }
-    
+
     /// The right menu.
     open var rightMenuNavigationController: SideMenuNavigationController? {
         get {
@@ -74,7 +74,7 @@ public class SideMenuManager: NSObject {
     /**
      Adds screen edge gestures for both left and right sides to a view to present a menu.
 
-     - Parameter toView: The view to add gestures to.
+     - Parameter view: The view to add gestures to.
 
      - Returns: The array of screen edge gestures added to `toView`.
      */
@@ -88,8 +88,8 @@ public class SideMenuManager: NSObject {
     /**
      Adds screen edge gestures to a view to present a menu.
      
-     - Parameter toView: The view to add gestures to.
-     - Parameter forMenu: The menu (left or right) you want to add a gesture for.
+     - Parameter view: The view to add gestures to.
+     - Parameter side: The menu (left or right) you want to add a gesture for.
  
      - Returns: The screen edge gestures added to `toView`.
      */
@@ -101,11 +101,11 @@ public class SideMenuManager: NSObject {
         }
         return self.addScreenEdgeGesture(to: view, edge: side.edge)
     }
-    
+
     /**
      Adds a pan edge gesture to a view to present menus.
      
-     - Parameter toView: The view to add a pan gesture to.
+     - Parameter view: The view to add a pan gesture to.
      
      - Returns: The pan gesture added to `toView`.
      */
@@ -113,7 +113,7 @@ public class SideMenuManager: NSObject {
         if leftMenuNavigationController ?? rightMenuNavigationController == nil {
             Print.warning(.panGestureAdded, arguments: #function, PresentDirection.left.name, PresentDirection.right.name, required: true)
         }
-        
+
         return addPresentPanGesture(to: view)
     }
 }
@@ -150,7 +150,7 @@ private extension SideMenuManager {
         if let activeMenu = activeMenu {
             let width = activeMenu.menuWidth
             let distance = gesture.xTranslation / width
-            switch (gesture.state) {
+            switch gesture.state {
             case .changed:
                 if gesture.canSwitch {
                     switching = (distance > 0 && !activeMenu.leftSide) || (distance < 0 && activeMenu.leftSide)
