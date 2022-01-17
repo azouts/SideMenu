@@ -12,5 +12,5 @@ let package = Package(
     targets: [
         .target(name: "SideMenu", path: "Pod/Classes")
     ],
-    swiftLanguageVersions: [.v4_2, .v5]
+    swiftLanguageVersions: [.v5]
 )
